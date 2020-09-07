@@ -1,4 +1,4 @@
-package junghoon.jetpack.sample.app
+package junghoon.jetpack.sample.app.room_library_samples
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

@@ -1,7 +1,8 @@
-package junghoon.jetpack.sample.app
+package junghoon.jetpack.sample.app.room_library_samples
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import junghoon.jetpack.sample.app.room_library_samples.Todo
 
 @Dao
 interface TodoDao {
