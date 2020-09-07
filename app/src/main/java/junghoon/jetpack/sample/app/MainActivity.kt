@@ -2,6 +2,8 @@ package junghoon.jetpack.sample.app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.room.Room
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,11 +20,13 @@ class MainActivity : AppCompatActivity() {
             .allowMainThreadQueries()
             .build()
 
-        result_textview.text = db.todoDao().getAll().toString()
+        //Room DB의 값을 observe 하면서 변경이 있을 때마다 화면 갱신
+        db.todoDao().getAll().observe(this, Observer {
+            result_textview.text = it.toString()
+        })
 
         todo_button.setOnClickListener {
             db.todoDao().insert(Todo(todo_edittext.text.toString()))
-            result_textview.text = db.todoDao().getAll().toString()
         }
     }
 }
