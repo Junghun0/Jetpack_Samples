@@ -1,2 +1,3 @@
+include ':mask_app'
 include ':app'
 rootProject.name = "Jetpack_Samples"
