@@ -1,3 +1,3 @@
-include ':mask_app'
+include ':mask_app_kotlin'
 include ':app'
 rootProject.name = "Jetpack_Samples"
