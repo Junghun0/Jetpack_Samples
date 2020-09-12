@@ -1,5 +1,6 @@
 package junghoon.jetpack.sample.mask_app_java.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,9 +30,36 @@ public class StoreAdapter extends RecyclerView.Adapter<StoreAdapter.StoreViewHol
         Store store = mItems.get(position);
         holder.mStoreNameTextView.setText(store.getName());
         holder.mAddressTextView.setText(store.getAddr());
-//        holder.mDistanceTextView.setText();
-        holder.mRemainTextView.setText(store.getRemainStat());
-        holder.mCountTextView.setText(store.getStockAt());
+
+        String remainStat = "충분";
+        String count = "100개 이상";
+        int color = Color.GREEN;
+        switch (store.getRemainStat()) {
+            case "plenty" :
+                count = "100개 이상";
+                remainStat = "충분";
+                color = Color.GREEN;
+                break;
+            case "some" :
+                count = "30개 이상";
+                remainStat = "여유";
+                color = Color.YELLOW;
+                break;
+            case "few" :
+                count = "2개 이상";
+                remainStat = "매진 임박";
+                color = Color.RED;
+                break;
+            case "empty" :
+                count = "재고 없음";
+                remainStat = "매진";
+                color = Color.GRAY;
+                break;
+        }
+        holder.mCountTextView.setText(count);
+        holder.mRemainTextView.setText(remainStat);
+        holder.mRemainTextView.setTextColor(color);
+        holder.mCountTextView.setTextColor(color);
     }
 
     @Override
