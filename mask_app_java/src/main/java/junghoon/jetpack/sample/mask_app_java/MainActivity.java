@@ -2,11 +2,12 @@ package junghoon.jetpack.sample.mask_app_java;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 
@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         PermissionListener permissionListener = new PermissionListener() {
@@ -63,10 +64,14 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("MissingPermission")
     private void performAction() {
         fusedLocationProviderClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-
+                .addOnSuccessListener(this, location -> {
+                    if (location != null) {
+                        Log.d("Location","getLatitude: "+location.getLatitude());
+                        Log.d("Location","getLongitude: "+location.getLongitude());
+                        location.setLatitude(37.188078);
+                        location.setLongitude(127.0430);
+                        viewModel.location = location;
+                        viewModel.fetchStoreInfo();
                     }
                 });
 
@@ -75,11 +80,19 @@ public class MainActivity extends AppCompatActivity {
         StoreAdapter adapter = new StoreAdapter();
         recyclerView.setAdapter(adapter);
 
-        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
         viewModel.getItemsLiveData().observe(this, stores -> {
             adapter.updateItems(stores);
             if (getSupportActionBar() != null) {
                 getSupportActionBar().setTitle("마스크 재고 있는 곳 : "+ stores.size());
+            }
+        });
+
+
+        viewModel.isLoading.observe(this, aBoolean -> {
+            if (aBoolean) {
+                findViewById(R.id.progressBar2).setVisibility(View.VISIBLE);
+            } else {
+                findViewById(R.id.progressBar2).setVisibility(View.GONE);
             }
         });
     }

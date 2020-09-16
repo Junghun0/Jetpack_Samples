@@ -1,5 +1,6 @@
 package junghoon.jetpack.sample.mask_app_java.viewmodel;
 
+import android.location.Location;
 import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
@@ -9,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import junghoon.jetpack.sample.mask_app_java.LocationDistance;
 import junghoon.jetpack.sample.mask_app_java.model.Store;
 import junghoon.jetpack.sample.mask_app_java.model.StoreInfo;
 import junghoon.jetpack.sample.mask_app_java.repository.MaskService;
@@ -22,6 +24,8 @@ public class MainViewModel extends ViewModel {
     public static final String TAG = MainViewModel.class.getSimpleName();
 
     private MutableLiveData<List<Store>> itemsLiveData = new MutableLiveData<>();
+    public MutableLiveData<Boolean> isLoading = new MutableLiveData<>();
+    public Location location;
 
     private Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(MaskService.BASE_URL)
@@ -30,29 +34,37 @@ public class MainViewModel extends ViewModel {
 
     private MaskService service = retrofit.create(MaskService.class);
 
-    private Call<StoreInfo> storeInfoCall = service.fetchStoreInfo();
-
     public MainViewModel() {
         fetchStoreInfo();
     }
 
     public void fetchStoreInfo() {
-        storeInfoCall.clone().enqueue(new Callback<StoreInfo>() {
+        isLoading.setValue(true);
+        service.fetchStoreInfo(location.getLatitude(), location.getLongitude()).enqueue(new Callback<StoreInfo>() {
             @Override
             public void onResponse(Call<StoreInfo> call, Response<StoreInfo> response) {
 
                 List<Store> items = response.body().getStores()
                         .stream()
                         .filter(item -> item.getRemainStat() != null)
+                        .filter(item -> !item.getRemainStat().equals("empty"))
                         .collect(Collectors.toList());
 
-                itemsLiveData.setValue(items);
+                for (Store store: items) {
+                    double distance = LocationDistance.distance(location.getLatitude(), location.getLongitude(), store.getLat(), store.getLng(), "k");
+                    store.setDistance(distance);
+                }
+
+                Collections.sort(items);
+                itemsLiveData.postValue(items);
+                isLoading.postValue(false);
             }
 
             @Override
             public void onFailure(Call<StoreInfo> call, Throwable t) {
                 Log.e(TAG, "onFailure: ", t);
                 itemsLiveData.setValue(Collections.emptyList());
+                isLoading.postValue(false);
             }
         });
     }

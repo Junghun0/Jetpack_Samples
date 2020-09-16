@@ -2,7 +2,7 @@ package junghoon.jetpack.sample.mask_app_java.model;
 
 import com.squareup.moshi.Json;
 
-public class Store {
+public class Store implements Comparable<Store>{
 
     @Json(name = "addr")
     private String addr;
@@ -22,6 +22,16 @@ public class Store {
     private String stockAt;
     @Json(name = "type")
     private String type;
+
+    private double distance;
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
 
     public String getAddr() {
         return addr;
@@ -93,5 +103,10 @@ public class Store {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    @Override
+    public int compareTo(Store store) {
+        return Double.compare(distance, store.distance);
     }
 }
