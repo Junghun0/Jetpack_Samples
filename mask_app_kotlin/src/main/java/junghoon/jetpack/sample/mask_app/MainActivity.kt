@@ -2,7 +2,9 @@ package junghoon.jetpack.sample.mask_app
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.View
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -22,6 +24,16 @@ class MainActivity : AppCompatActivity() {
         store_recyclerview.apply {
             layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
             this.adapter = adapter
+        }
+
+        viewModel.apply {
+            itemLiveData.observe(this@MainActivity, Observer {
+                adapter.updateItems(it)
+            })
+
+            isLoading.observe(this@MainActivity, Observer {
+                progressBar2.visibility = if (it) View.VISIBLE else View.GONE
+            })
         }
     }
 }
