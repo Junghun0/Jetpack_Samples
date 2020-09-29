@@ -26,7 +26,6 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
             }
 
             findNavController().navigate(R.id.action_secondFragment_to_firstFragment)
-
         }
     }
 }
