@@ -23,8 +23,8 @@ class FirstFragment : Fragment(R.layout.fragment_first) {
 
             findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
         }
-        
 
+        
     }
 
 }
