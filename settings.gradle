@@ -1,3 +1,4 @@
+include ':hilt_di_sample'
 include ':data_transfer'
 include ':counter_app_kotlin'
 include ':mask_app_java'
