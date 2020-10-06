@@ -11,6 +11,8 @@ import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import junghoon.jetpack.sample.hilt_di_sample.R
 import junghoon.jetpack.sample.hilt_di_sample.data.MyRepository
+import junghoon.jetpack.sample.hilt_di_sample.di.qualifier.ActivityHash
+import junghoon.jetpack.sample.hilt_di_sample.di.qualifier.AppHash
 import junghoon.jetpack.sample.hilt_di_sample.ui.second.SecondActivity
 import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
@@ -21,10 +23,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     @Inject
     lateinit var repository: MyRepository
 
+    @AppHash
+    @Inject
+    lateinit var applicationHash: String
+
+    @ActivityHash
+    @Inject
+    lateinit var activityHash: String
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("MainFragment","repository hashcode ${repository.hashCode()}")
+        Log.d("MainFragment","@app hashcode ${applicationHash.hashCode()}")
+        Log.d("MainFragment","@activity hashcode ${activityHash.hashCode()}")
 
         button_activity.setOnClickListener {
             val intent = Intent(requireContext(), SecondActivity::class.java)
