@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import junghoon.jetpack.sample.hilt_di_sample.R
@@ -17,6 +19,8 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class SecondFragment : Fragment(R.layout.fragment_second) {
+    private val activityViewModel by activityViewModels<MainViewModel>()
+    private val viewModel by viewModels<MainViewModel>()
 
     @Inject
     lateinit var repository: MyRepository
@@ -35,6 +39,8 @@ class SecondFragment : Fragment(R.layout.fragment_second) {
         Log.d("SecondFragment","repository hashcode ${repository.hashCode()}")
         Log.d("SecondFragment","@app hashcode ${applicationHash.hashCode()}")
         Log.d("SecondFragment","@activity hashcode ${activityHash.hashCode()}")
+        Log.d("SecondFragment","viewModel hashcode ${viewModel.getRepositoryHash()}")
+        Log.d("SecondFragment","activityViewModel hashcode ${activityViewModel.getRepositoryHash()}")
 
         button.setOnClickListener {
             findNavController().navigate(R.id.action_secondFragment_to_mainFragment)
