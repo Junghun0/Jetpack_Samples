@@ -1,4 +1,9 @@
 package junghoon.jetpack.sample.hilt_di_sample.data
 
-class MyRepository {
+import javax.inject.Inject
+import javax.inject.Singleton
+
+@Singleton
+class MyRepository @Inject constructor() {
+
 }
