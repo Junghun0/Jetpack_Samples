@@ -37,5 +37,6 @@ class SecondActivity : AppCompatActivity() {
         Log.d("SecondActivity","@app hashcode ${applicationHash.hashCode()}")
         Log.d("SecondActivity","@activity hashcode ${activityHash.hashCode()}")
         Log.d("SecondActivity","viewModel hashcode ${viewModel.getRepositoryHash()}")
+
     }
 }
