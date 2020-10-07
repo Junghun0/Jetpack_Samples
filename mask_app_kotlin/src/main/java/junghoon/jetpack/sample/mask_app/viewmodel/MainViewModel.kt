@@ -25,7 +25,9 @@ class MainViewModel @ViewModelInject constructor(
 
         viewModelScope.launch {
             val storeInfo = service.fetchStoreInfo(381.23,123.223)
-            itemLiveData.value = storeInfo.stores
+            itemLiveData.value = storeInfo.stores.filter { store ->
+                store.remain_stat != null
+            }
             isLoading.value = false
         }
     }
