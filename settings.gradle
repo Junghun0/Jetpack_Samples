@@ -1,3 +1,4 @@
+include ':paging_sample_app'
 include ':hilt_di_sample'
 include ':data_transfer'
 include ':counter_app_kotlin'
