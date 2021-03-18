@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">paging_sample_app</string>
+    <string name="language">Language: %s</string>
 </resources>
