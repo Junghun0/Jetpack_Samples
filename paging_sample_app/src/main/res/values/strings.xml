@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">paging_sample_app</string>
     <string name="language">Language: %s</string>
+    <string name="loading">Loading</string>
+    <string name="unknown">\?</string>
+    <string name="retry">Retry</string>
 </resources>
