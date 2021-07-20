@@ -10,7 +10,8 @@ class BackGroundWorker(appContext: Context, workerParams: WorkerParameters) :
     Worker(appContext, workerParams) {
 
     override fun doWork(): Result {
-        Log.d("WorkManager"," doWorking Now!!")
+        val curTime = System.currentTimeMillis()
+        Log.e("jhjh"," WorkManager doWorking Now!!-- $curTime")
         return Result.success()
     }
 }
